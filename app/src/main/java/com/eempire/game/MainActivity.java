@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 
         ImageView background = new ImageView(this);
         background.setImageResource(R.drawable.menu_bg);
-        background.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        background.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         setContentView(background);
     }
