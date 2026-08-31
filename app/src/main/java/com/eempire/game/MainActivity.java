@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
 
         ImageView background = new ImageView(this);
         background.setImageResource(R.drawable.launcher_bg);
-        background.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        background.setScaleType(ImageView.ScaleType.FIT_XY);
         frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
 
         // ناحیه کلیک Nickname
