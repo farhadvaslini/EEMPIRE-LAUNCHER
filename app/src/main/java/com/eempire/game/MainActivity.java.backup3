@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 
         prefs = getSharedPreferences("empire_accounts", MODE_PRIVATE);
 
-        showLauncher();
+        showLogin();
     }
 
     GradientDrawable panelBackground() {
@@ -142,62 +142,6 @@ public class MainActivity extends Activity {
         setContentView(frame);
 
         return root;
-    }
-
-    void showLauncher() {
-
-        FrameLayout frame = new FrameLayout(this);
-
-        ImageView background = new ImageView(this);
-        background.setImageResource(R.drawable.launcher_bg);
-        background.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-        frame.addView(
-                background,
-                new FrameLayout.LayoutParams(-1, -1)
-        );
-
-        LinearLayout content = new LinearLayout(this);
-        content.setOrientation(LinearLayout.VERTICAL);
-        content.setGravity(Gravity.CENTER);
-        content.setPadding(45, 45, 45, 45);
-
-        TextView title = text("EMPIRE GAME", 34);
-        title.setTextColor(Color.rgb(255, 70, 190));
-        title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        content.addView(title);
-
-        TextView subtitle = text("WELCOME", 16);
-        subtitle.setTextColor(Color.WHITE);
-        content.addView(subtitle);
-
-        Button login = button("🔐 ورود");
-        Button register = button("📝 ثبت‌نام");
-
-        content.addView(login);
-        content.addView(register);
-
-        login.setOnClickListener(v ->
-                showLogin()
-        );
-
-        register.setOnClickListener(v ->
-                showRegisterName()
-        );
-
-        FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(
-                        -1,
-                        -2
-                );
-
-        params.gravity = Gravity.CENTER;
-        params.setMargins(35, 35, 35, 35);
-
-        frame.addView(content, params);
-
-        setContentView(frame);
     }
 
     void showLogin() {
