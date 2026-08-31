@@ -149,8 +149,16 @@ public class MainActivity extends Activity {
 
         ImageView background = new ImageView(this);
         background.setImageResource(R.drawable.launcher_bg);
-        background.setScaleType(ImageView.ScaleType.FIT_XY);
-        frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
+        background.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        FrameLayout.LayoutParams bgParams =
+                new FrameLayout.LayoutParams(-1, -1);
+        bgParams.gravity = Gravity.CENTER;
+        background.setLayoutParams(bgParams);
+
+        background.setScaleX(1.12f);
+
+        frame.addView(background);
 
         // ناحیه کلیک Nickname
         TextView nicknameArea = new TextView(this);
