@@ -148,37 +148,75 @@ public class MainActivity extends Activity {
         FrameLayout frame = new FrameLayout(this);
 
         ImageView background = new ImageView(this);
-        background.setImageResource(R.drawable.menu_bg);
-        background.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        background.setImageResource(R.drawable.launcher_bg);
+        background.setScaleType(ImageView.ScaleType.FIT_XY);
         frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
 
-        LinearLayout buttons = new LinearLayout(this);
-        buttons.setOrientation(LinearLayout.VERTICAL);
-        buttons.setGravity(Gravity.CENTER);
-        buttons.setPadding(35, 20, 35, 20);
+        // ناحیه کلیک Nickname
+        TextView nicknameArea = new TextView(this);
+        nicknameArea.setBackgroundColor(Color.TRANSPARENT);
+        nicknameArea.setOnClickListener(v -> showRegisterName());
+        addClickArea(frame, nicknameArea, 0.68f, 0.12f, 0.30f, 0.12f);
 
-        Button login = button("🔐  ورود به حساب");
-        Button register = button("✨  ساخت حساب جدید");
-        Button support = button("❓  راهنما و پشتیبانی");
+        // ناحیه کلیک ورود به بازی
+        TextView playArea = new TextView(this);
+        playArea.setBackgroundColor(Color.TRANSPARENT);
+        playArea.setOnClickListener(v -> showLogin());
+        addClickArea(frame, playArea, 0.68f, 0.28f, 0.30f, 0.13f);
 
-        buttons.addView(login);
-        buttons.addView(register);
-        buttons.addView(support);
+        // ناحیه کلیک خروج از حساب
+        TextView logoutArea = new TextView(this);
+        logoutArea.setBackgroundColor(Color.TRANSPARENT);
+        logoutArea.setOnClickListener(v -> {
+            getSharedPreferences("eempire", MODE_PRIVATE)
+                    .edit()
+                    .remove("nickname")
+                    .remove("password")
+                    .apply();
 
-        login.setOnClickListener(v -> showLogin());
-        register.setOnClickListener(v -> showRegisterName());
+            toast("از حساب خارج شدید.");
+        });
+        addClickArea(frame, logoutArea, 0.68f, 0.43f, 0.30f, 0.12f);
 
-        support.setOnClickListener(v ->
-                toast("راهنما و پشتیبانی EEMPIRE GAME به‌زودی فعال می‌شود.")
+        // ناحیه کلیک راهنما و پشتیبانی
+        TextView supportArea = new TextView(this);
+        supportArea.setBackgroundColor(Color.TRANSPARENT);
+        supportArea.setOnClickListener(v ->
+                toast("در روبیکا به آیدی @Farhad_vaseli پیام دهید")
         );
+        addClickArea(frame, supportArea, 0.68f, 0.58f, 0.30f, 0.12f);
+
+        setContentView(frame);
+    }
+
+    void addClickArea(FrameLayout frame, View view,
+                      float x, float y, float width, float height) {
 
         FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(-1, -2);
-        params.gravity = Gravity.CENTER;
-        params.setMargins(35, 80, 35, 80);
+                new FrameLayout.LayoutParams(0, 0);
 
-        frame.addView(buttons, params);
-        setContentView(frame);
+        params.leftMargin = 0;
+        params.topMargin = 0;
+
+        frame.addView(view, params);
+
+        view.post(() -> {
+            int screenWidth = frame.getWidth();
+            int screenHeight = frame.getHeight();
+
+            int w = (int) (screenWidth * width);
+            int h = (int) (screenHeight * height);
+            int left = (int) (screenWidth * x);
+            int top = (int) (screenHeight * y);
+
+            FrameLayout.LayoutParams p =
+                    new FrameLayout.LayoutParams(w, h);
+
+            p.leftMargin = left;
+            p.topMargin = top;
+
+            view.setLayoutParams(p);
+        });
     }
 
     void showLogin() {
