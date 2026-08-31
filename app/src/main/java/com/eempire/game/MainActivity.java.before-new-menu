@@ -81,27 +81,24 @@ public class MainActivity extends Activity {
     Button button(String value) {
         Button b = new Button(this);
         b.setText(value);
-        b.setTextColor(Color.WHITE);
-        b.setTextSize(16);
+        b.setTextColor(WHITE);
+        b.setTextSize(15);
         b.setAllCaps(false);
-        b.setGravity(Gravity.CENTER);
-        b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        b.setPadding(20, 0, 20, 0);
 
         GradientDrawable bg = new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT,
                 new int[]{
-                        Color.rgb(170, 20, 35),
-                        Color.rgb(255, 75, 45)
+                        Color.rgb(25, 90, 180),
+                        Color.rgb(100, 30, 180)
                 }
         );
-        bg.setCornerRadius(32);
-        bg.setStroke(2, Color.argb(210, 255, 150, 110));
+
+        bg.setCornerRadius(28);
         b.setBackground(bg);
 
         LinearLayout.LayoutParams p =
-                new LinearLayout.LayoutParams(-1, 62);
-        p.setMargins(0, 10, 0, 10);
+                new LinearLayout.LayoutParams(-1, 58);
+        p.setMargins(0, 8, 0, 8);
         b.setLayoutParams(p);
 
         return b;
@@ -145,39 +142,58 @@ public class MainActivity extends Activity {
     }
 
     void showLauncher() {
+
         FrameLayout frame = new FrameLayout(this);
 
         ImageView background = new ImageView(this);
-        background.setImageResource(R.drawable.menu_bg);
+        background.setImageResource(R.drawable.launcher_bg);
         background.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
 
-        LinearLayout buttons = new LinearLayout(this);
-        buttons.setOrientation(LinearLayout.VERTICAL);
-        buttons.setGravity(Gravity.CENTER);
-        buttons.setPadding(35, 20, 35, 20);
+        frame.addView(
+                background,
+                new FrameLayout.LayoutParams(-1, -1)
+        );
 
-        Button login = button("🔐  ورود به حساب");
-        Button register = button("✨  ساخت حساب جدید");
-        Button support = button("❓  راهنما و پشتیبانی");
+        LinearLayout content = new LinearLayout(this);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setGravity(Gravity.CENTER);
+        content.setPadding(45, 45, 45, 45);
 
-        buttons.addView(login);
-        buttons.addView(register);
-        buttons.addView(support);
+        TextView title = text("EMPIRE GAME", 34);
+        title.setTextColor(Color.rgb(255, 70, 190));
+        title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        login.setOnClickListener(v -> showLogin());
-        register.setOnClickListener(v -> showRegisterName());
+        content.addView(title);
 
-        support.setOnClickListener(v ->
-                toast("راهنما و پشتیبانی EEMPIRE GAME به‌زودی فعال می‌شود.")
+        TextView subtitle = text("WELCOME", 16);
+        subtitle.setTextColor(Color.WHITE);
+        content.addView(subtitle);
+
+        Button login = button("🔐 ورود");
+        Button register = button("📝 ثبت‌نام");
+
+        content.addView(login);
+        content.addView(register);
+
+        login.setOnClickListener(v ->
+                showLogin()
+        );
+
+        register.setOnClickListener(v ->
+                showRegisterName()
         );
 
         FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(-1, -2);
-        params.gravity = Gravity.CENTER;
-        params.setMargins(35, 80, 35, 80);
+                new FrameLayout.LayoutParams(
+                        -1,
+                        -2
+                );
 
-        frame.addView(buttons, params);
+        params.gravity = Gravity.CENTER;
+        params.setMargins(35, 35, 35, 35);
+
+        frame.addView(content, params);
+
         setContentView(frame);
     }
 
