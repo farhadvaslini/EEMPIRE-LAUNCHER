@@ -1,0 +1,201 @@
+package com.eempire.game;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    SharedPreferences prefs;
+    LinearLayout layout;
+
+    int bg = Color.rgb(18, 8, 28);
+    int text = Color.WHITE;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
+
+        prefs = getSharedPreferences("empire_accounts", MODE_PRIVATE);
+
+        showLogin();
+    }
+
+    TextView title(String s) {
+        TextView t = new TextView(this);
+        t.setText(s);
+        t.setTextColor(text);
+        t.setTextSize(28);
+        t.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        t.setGravity(Gravity.CENTER);
+        t.setPadding(0, 30, 0, 30);
+        return t;
+    }
+
+    EditText input(String hint) {
+        EditText e = new EditText(this);
+        e.setHint(hint);
+        e.setHintTextColor(Color.LTGRAY);
+        e.setTextColor(text);
+        e.setSingleLine(true);
+        e.setPadding(25, 15, 25, 15);
+        return e;
+    }
+
+    Button button(String s) {
+        Button b = new Button(this);
+        b.setText(s);
+        b.setTextSize(16);
+        return b;
+    }
+
+    LinearLayout base() {
+        LinearLayout l = new LinearLayout(this);
+        l.setOrientation(LinearLayout.VERTICAL);
+        l.setGravity(Gravity.CENTER);
+        l.setPadding(45, 20, 45, 20);
+        l.setBackgroundColor(bg);
+        return l;
+    }
+
+    void showLogin() {
+
+        layout = base();
+
+        layout.addView(title("EMPIRE GAME"));
+
+        EditText nickname = input("Nickname");
+        EditText password = input("Password");
+        password.setInputType(0x81);
+
+        layout.addView(nickname);
+        layout.addView(password);
+
+        Button login = button("LOGIN");
+        Button register = button("REGISTER");
+
+        layout.addView(login);
+        layout.addView(register);
+
+        setContentView(layout);
+
+        login.setOnClickListener(v -> {
+
+            String name = nickname.getText().toString().trim();
+            String pass = password.getText().toString();
+
+            if (name.isEmpty() || pass.isEmpty()) {
+                toast("Please enter Nickname and Password.");
+                return;
+            }
+
+            String savedName = prefs.getString("nickname", "");
+            String savedPass = prefs.getString("password", "");
+
+            if (name.equals(savedName) && pass.equals(savedPass)) {
+                toast("Welcome back to EMPIRE GAME!");
+            } else {
+                toast("Account not found or incorrect password.");
+            }
+        });
+
+        register.setOnClickListener(v -> showRegister());
+    }
+
+    void showRegister() {
+
+        layout = base();
+
+        layout.addView(title("🎫 Registration"));
+
+        EditText nickname = input("Nickname");
+        EditText password = input("Password");
+        password.setInputType(0x81);
+
+        EditText phone = input("Phone Number");
+        EditText referral = input("Referral Code");
+        EditText gender = input("Gender");
+        EditText email = input("Email Address");
+
+        layout.addView(nickname);
+        layout.addView(password);
+        layout.addView(phone);
+        layout.addView(referral);
+        layout.addView(gender);
+        layout.addView(email);
+
+        Button register = button("COMPLETE REGISTRATION");
+        Button back = button("BACK");
+
+        layout.addView(register);
+        layout.addView(back);
+
+        setContentView(layout);
+
+        register.setOnClickListener(v -> {
+
+            String name = nickname.getText().toString().trim();
+            String pass = password.getText().toString();
+
+            if (name.isEmpty() || pass.isEmpty()) {
+                toast("Nickname and Password are required.");
+                return;
+            }
+
+            prefs.edit()
+                    .putString("nickname", name)
+                    .putString("password", pass)
+                    .putString("phone", phone.getText().toString())
+                    .putString("referral", referral.getText().toString())
+                    .putString("gender", gender.getText().toString())
+                    .putString("email", email.getText().toString())
+                    .apply();
+
+            toast("🎫 Congratulations! Registration completed.");
+
+            showWelcome();
+        });
+
+        back.setOnClickListener(v -> showLogin());
+    }
+
+    void showWelcome() {
+
+        layout = base();
+
+        layout.addView(title("EMPIRE GAME"));
+
+        TextView welcome = new TextView(this);
+        welcome.setText("🎫 Congratulations!\n\nYour registration has been completed successfully.\n\n✅ Welcome to EMPIRE GAME!");
+        welcome.setTextColor(text);
+        welcome.setTextSize(20);
+        welcome.setGravity(Gravity.CENTER);
+        welcome.setPadding(20, 30, 20, 30);
+
+        layout.addView(welcome);
+
+        Button continueButton = button("ENTER SERVER");
+        layout.addView(continueButton);
+
+        setContentView(layout);
+
+        continueButton.setOnClickListener(v ->
+                toast("Server connection will be added next.")
+        );
+    }
+
+    void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+}
