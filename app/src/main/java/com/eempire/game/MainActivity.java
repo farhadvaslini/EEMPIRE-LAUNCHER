@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
         FrameLayout frame = new FrameLayout(this);
 
         ImageView background = new ImageView(this);
-        background.setImageResource(R.drawable.menu_bg);
+        background.setImageResource(R.drawable.launcher_bg);
         background.setScaleType(ImageView.ScaleType.CENTER_CROP);
         frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
 
