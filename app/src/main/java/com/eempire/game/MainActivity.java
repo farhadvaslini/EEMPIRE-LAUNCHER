@@ -105,42 +105,39 @@ public class MainActivity extends Activity {
     }
 
     LinearLayout base() {
-
         FrameLayout frame = new FrameLayout(this);
 
         ImageView background = new ImageView(this);
         background.setImageResource(R.drawable.menu_bg);
         background.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-        frame.addView(
-                background,
-                new FrameLayout.LayoutParams(-1, -1)
-        );
+        frame.addView(background, new FrameLayout.LayoutParams(-1, -1));
 
         ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setClipToPadding(false);
+        scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setGravity(Gravity.CENTER);
-        root.setPadding(35, 35, 35, 35);
-
+        root.setGravity(Gravity.CENTER_HORIZONTAL);
+        root.setPadding(24, 28, 24, 28);
         root.setBackground(panelBackground());
 
-        scroll.addView(
-                root,
-                new LinearLayout.LayoutParams(-1, -2)
-        );
+        scroll.addView(root, new ScrollView.LayoutParams(
+                -1,
+                -2
+        ));
 
         FrameLayout.LayoutParams scrollParams =
-                new FrameLayout.LayoutParams(-1, -2);
+                new FrameLayout.LayoutParams(
+                        -1,
+                        -1
+                );
 
-        scrollParams.gravity = Gravity.CENTER;
-        scrollParams.setMargins(25, 40, 25, 40);
-
+        scrollParams.setMargins(18, 18, 18, 18);
         frame.addView(scroll, scrollParams);
 
         setContentView(frame);
-
         return root;
     }
 
